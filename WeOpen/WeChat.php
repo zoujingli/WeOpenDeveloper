@@ -16,17 +16,17 @@ namespace WeOpen;
 
 use WeChat\Contracts\DataArray;
 use WeChat\Contracts\Tools;
-use WeChat\Contracts\WeChat;
+use WeChat\Contracts\WeChat as BasicWeChat;
 use WeChat\Exceptions\InvalidArgumentException;
 use WeChat\Exceptions\InvalidResponseException;
 use WeChat\Receive;
 
 /**
  * 第三方平台支持
- * Class Open
+ * Class WeChat
  * @package WeChat
  */
-class Open extends WeChat
+class WeChat extends BasicWeChat
 {
 
     /**

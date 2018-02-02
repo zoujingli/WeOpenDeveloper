@@ -12,13 +12,14 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-namespace WeChat;
+namespace WeOpen;
 
 use WeChat\Contracts\DataArray;
 use WeChat\Contracts\Tools;
 use WeChat\Contracts\WeChat;
 use WeChat\Exceptions\InvalidArgumentException;
 use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Receive;
 
 /**
  * 第三方平台支持
@@ -52,8 +53,8 @@ class Open extends WeChat
     /**
      * 接收公众平台推送的 Ticket
      * @return bool|array
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function setComonentTicket()
     {
@@ -73,8 +74,8 @@ class Open extends WeChat
     /**
      * 获取或刷新服务 AccessToken
      * @return bool|string
-     * @throws Exceptions\LocalCacheException
-     * @throws Exceptions\InvalidResponseException
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getComponentAccessToken()
     {
@@ -101,6 +102,7 @@ class Open extends WeChat
      * @return array
      * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getAuthorizerInfo($authorizer_appid)
     {
@@ -119,8 +121,8 @@ class Open extends WeChat
      * @param string $option_name 选项名称
      * @param string $option_value 设置的选项值
      * @return array
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function setAuthorizerOption($authorizer_appid, $option_name, $option_value)
     {
@@ -138,8 +140,8 @@ class Open extends WeChat
     /**
      * 获取预授权码 pre_auth_code
      * @return string
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getPreauthCode()
     {
@@ -157,8 +159,8 @@ class Open extends WeChat
      * @param string $redirect_uri 回调URI
      * @param integer $auth_type 要授权的帐号类型
      * @return bool
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getAuthRedirect($redirect_uri, $auth_type = 3)
     {
@@ -171,8 +173,8 @@ class Open extends WeChat
     /**
      * 使用授权码换取公众号或小程序的接口调用凭据和授权信息
      * @return bool|array
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getQueryAuthorizerInfo()
     {
@@ -198,8 +200,8 @@ class Open extends WeChat
      * @param string $authorizer_appid 授权公众号或小程序的appid
      * @param string $authorizer_refresh_token 授权方的刷新令牌
      * @return array
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function refreshAccessToken($authorizer_appid, $authorizer_refresh_token)
     {
@@ -237,8 +239,8 @@ class Open extends WeChat
      * 通过code获取AccessToken
      * @param string $authorizer_appid 授权公众号或小程序的appid
      * @return bool|array
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      */
     public function getOauthAccessToken($authorizer_appid)
     {

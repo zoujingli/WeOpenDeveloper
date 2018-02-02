@@ -5,13 +5,13 @@
   "description": "WeChat Open development of SDK",
   "license": "MIT",
   "keywords": [
-   "WeOpenDeveloper"
+    "WeOpenDeveloper"
   ],
   "require": {
     "php": ">=5.4",
     "ext-curl": "*",
     "ext-openssl": "*",
-	"zoujingli/wechat-developer":"*"
+    "zoujingli/wechat-developer": "dev-master"
   },
   "autoload": {
     "psr-4": {

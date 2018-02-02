@@ -26,7 +26,7 @@ use WeChat\Receive;
  * Class WeChat
  * @package WeChat
  */
-class WeChat extends BasicWeChat
+class Service extends BasicWeChat
 {
 
     /**

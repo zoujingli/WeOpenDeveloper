@@ -47,7 +47,7 @@ try {
 
     // 1. 手动加载入口文件
     include "../vendor/autoload.php";
-    include "../WeOpen/WeChat.php";
+    include "../WeOpen/Service.php";
 
     // 2. 准备配置参数
     $config = [
@@ -58,7 +58,7 @@ try {
     ];
     // 注册授权公众号 AccessToken 处理
     $config['GetAccessTokenCallback'] = function ($authorizer_appid) use ($config) {
-        $open = new \WeOpen\WeChat($config);
+        $open = new \WeOpen\Service($config);
         $authorizer_refresh_token = ''; // 从数据库去找吧，在授权绑定的时候获取到了
         $result = $open->refreshAccessToken($authorizer_appid, $authorizer_refresh_token);
         if (empty($result['authorizer_access_token'])) {
@@ -73,7 +73,7 @@ try {
     };
 
     // 3 使用第三方服务创建接口实例
-    $open = new \WeOpen\WeChat($config);
+    $open = new \WeOpen\Service($config);
     $wechat = $open->instance('授权公众号APPID', 'User');
 
 } catch (Exception $e) {

@@ -16,7 +16,6 @@ try {
 
     // 1. 手动加载入口文件
     include "../vendor/autoload.php";
-    include "../WeOpen/Service.php";
 
     // 2. 准备配置参数
     $config = [

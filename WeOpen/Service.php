@@ -87,13 +87,14 @@ class Service
         $component_access_token = Tools::getCache($cache);
         if (empty($component_access_token)) {
             $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
-            $result = $this->httpPostForJson($url, [
+            $data = [
                 'component_appid'         => $this->config->get('component_appid'),
                 'component_appsecret'     => $this->config->get('component_appsecret'),
                 'component_verify_ticket' => Tools::getCache('component_verify_ticket'),
-            ]);
+            ];
+            $result = $this->httpPostForJson($url, $data);
             if (empty($result['component_access_token'])) {
-                throw new InvalidResponseException($result['errmsg'], $result['errcode']);
+                throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
             }
             $component_access_token = $result['component_access_token'];
             Tools::setCache($cache, $component_access_token, 7000);
@@ -153,7 +154,7 @@ class Service
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token={$component_access_token}";
         $result = $this->httpPostForJson($url, ['component_appid' => $this->config->get('component_appid')]);
         if (empty($result['pre_auth_code'])) {
-            throw new InvalidResponseException('GetPreauthCode Faild.', '0');
+            throw new InvalidResponseException('GetPreauthCode Faild.', '0', $result);
         }
         return $result['pre_auth_code'];
     }
@@ -168,8 +169,8 @@ class Service
      */
     public function getAuthRedirect($redirect_uri, $auth_type = 3)
     {
-        $pre_auth_code = $this->getPreauthCode();
         $redirect_uri = urlencode($redirect_uri);
+        $pre_auth_code = $this->getPreauthCode();
         $component_appid = $this->config->get('component_appid');
         return "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid={$component_appid}&pre_auth_code={$pre_auth_code}&redirect_uri={$redirect_uri}&auth_type={$auth_type}";
     }
@@ -187,12 +188,13 @@ class Service
         }
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token={$component_access_token}";
-        $result = $this->httpPostForJson($url, [
+        $data = [
             'component_appid'    => $this->config->get('component_appid'),
             'authorization_code' => $_GET['auth_code'],
-        ]);
+        ];
+        $result = $this->httpPostForJson($url, $data);
         if (empty($result['authorizer_appid']) || empty($result['authorizer_access_token'])) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode']);
+            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
         }
         // 缓存授权公众号访问 ACCESS_TOKEN
         Tools::setCache("{$result['authorizer_appid']}_access_token", $result['authorizer_access_token'], 7000);
@@ -211,13 +213,14 @@ class Service
     {
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token={$component_access_token}";
-        $result = $this->httpPostForJson($url, [
+        $data = [
             'authorizer_appid'         => $authorizer_appid,
             'authorizer_refresh_token' => $authorizer_refresh_token,
             'component_appid'          => $this->config->get('component_appid'),
-        ]);
+        ];
+        $result = $this->httpPostForJson($url, $data);
         if (empty($result['authorizer_access_token'])) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode']);
+            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
         }
         // 缓存授权公众号访问 ACCESS_TOKEN
         Tools::setCache("{$authorizer_appid}_access_token", $result['authorizer_access_token'], 7000);

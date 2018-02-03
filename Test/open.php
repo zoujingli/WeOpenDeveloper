@@ -47,9 +47,9 @@ try {
 
     // 3 使用第三方服务创建接口实例
     $open = new \WeOpen\Service($config);
-    $wechat = $open->instance('授权公众号APPID', 'User');
     $wechat = $open->instance('User', 'wx60a43dd8161666d4');
-    $wechat->getUserList();
+    $list = $wechat->getUserList();
+    var_export($list);
 
 } catch (Exception $e) {
 

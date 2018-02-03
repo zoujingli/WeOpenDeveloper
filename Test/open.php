@@ -14,10 +14,8 @@
 
 try {
 
-
     // 1. 手动加载入口文件
     include "../vendor/autoload.php";
-
 
     // 2. 准备配置参数
     $config = [
@@ -27,14 +25,12 @@ try {
         'component_encodingaeskey' => 'L5uFIa0U6KLalPyXckyqoVIJYLhsfrg8k9YzybZIHsx',
     ];
 
-
     // 注册授权公众号 AccessToken 处理
     $config['GetAccessTokenCallback'] = function ($authorizer_appid) use ($config) {
         $open = new \WeOpen\Service($config);
         $authorizer_refresh_token = 'L5uFIa0U6KLalPyXckyqoVIJYLhsfrg8k9YzybZIHsx'; // 从数据库去找吧，在授权绑定的时候获取到了
         $result = $open->refreshAccessToken($authorizer_appid, $authorizer_refresh_token);
         if (empty($result['authorizer_access_token'])) {
-            var_export($result);
             throw new \WeChat\Exceptions\InvalidResponseException($result['errmsg'], '0');
         }
         $data = [

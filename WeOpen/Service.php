@@ -85,16 +85,17 @@ class Service
     {
         $cache = 'wechat_component_access_token';
         $component_access_token = Tools::getCache($cache);
-        if (empty($$component_access_token)) {
+        if (empty($component_access_token)) {
             $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
             $result = $this->httpPostForJson($url, [
                 'component_appid'         => $this->config->get('component_appid'),
                 'component_appsecret'     => $this->config->get('component_appsecret'),
-                'component_verify_ticket' => Tools::get('component_verify_ticket'),
+                'component_verify_ticket' => Tools::getCache('component_verify_ticket'),
             ]);
             if (empty($result['component_access_token'])) {
-                throw new InvalidResponseException('GetComponentAccessToken Faild', '0');
+                throw new InvalidResponseException($result['errmsg'], $result['errcode']);
             }
+            $component_access_token = $result['component_access_token'];
             Tools::setCache($cache, $component_access_token, 7000);
         }
         return $component_access_token;
@@ -104,7 +105,6 @@ class Service
      * 获取授权方的帐号基本信息
      * @param string $authorizer_appid 授权公众号或小程序的appid
      * @return array
-     * @throws Exceptions\LocalCacheException
      * @throws InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
@@ -192,7 +192,7 @@ class Service
             'authorization_code' => $_GET['auth_code'],
         ]);
         if (empty($result['authorizer_appid']) || empty($result['authorizer_access_token'])) {
-            throw new InvalidResponseException('GetQueryAuthorizerInfo Faild.', '0');
+            throw new InvalidResponseException($result['errmsg'], $result['errcode']);
         }
         // 缓存授权公众号访问 ACCESS_TOKEN
         Tools::setCache("{$result['authorizer_appid']}_access_token", $result['authorizer_access_token'], 7000);
@@ -210,14 +210,14 @@ class Service
     public function refreshAccessToken($authorizer_appid, $authorizer_refresh_token)
     {
         $component_access_token = $this->getComponentAccessToken();
-        $url = "https:// api.weixin.qq.com /cgi-bin/component/api_authorizer_token?component_access_token={$component_access_token}";
+        $url = "https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token={$component_access_token}";
         $result = $this->httpPostForJson($url, [
             'authorizer_appid'         => $authorizer_appid,
             'authorizer_refresh_token' => $authorizer_refresh_token,
             'component_appid'          => $this->config->get('component_appid'),
         ]);
         if (empty($result['authorizer_access_token'])) {
-            throw new InvalidResponseException('RefreshAccessToken Faild', '0');
+            throw new InvalidResponseException($result['errmsg'], $result['errcode']);
         }
         // 缓存授权公众号访问 ACCESS_TOKEN
         Tools::setCache("{$authorizer_appid}_access_token", $result['authorizer_access_token'], 7000);
@@ -280,22 +280,20 @@ class Service
      * @param array $data 请求数据
      * @param bool $buildToJson
      * @return array
-     * @throws InvalidResponseException
      */
     protected function httpPostForJson($url, array $data, $buildToJson = true)
     {
-        return Tools::json2arr(Tools::post($url, $buildToJson ? Tools::arr2json($data) : $data));
+        return json_decode(Tools::post($url, $buildToJson ? Tools::arr2json($data) : $data), true);
     }
 
     /**
      * 以GET获取接口数据并转为数组
      * @param string $url 接口地址
      * @return array
-     * @throws InvalidResponseException
      */
     protected function httpGetForJson($url)
     {
-        return Tools::json2arr(Tools::get($url));
+        return json_decode(Tools::get($url), true);
     }
 
 }

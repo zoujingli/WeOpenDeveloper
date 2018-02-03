@@ -16,21 +16,25 @@ namespace WeOpen;
 
 use WeChat\Contracts\DataArray;
 use WeChat\Contracts\Tools;
-use WeChat\Contracts\WeChat as BasicWeChat;
 use WeChat\Exceptions\InvalidArgumentException;
 use WeChat\Exceptions\InvalidResponseException;
 use WeChat\Receive;
 
 /**
  * 第三方平台支持
- * Class WeChat
- * @package WeChat
+ * Class Service
+ * @package WeOpen
  */
-class Service extends BasicWeChat
+class Service
 {
+    /**
+     * 当前配置对象
+     * @var DataArray
+     */
+    protected $config;
 
     /**
-     * Open constructor.
+     * Service constructor.
      * @param array $options
      */
     public function __construct(array $options)
@@ -83,7 +87,7 @@ class Service extends BasicWeChat
         $component_access_token = Tools::getCache($cache);
         if (empty($$component_access_token)) {
             $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
-            $result = $this->callPostApi($url, [
+            $result = $this->httpPostForJson($url, [
                 'component_appid'         => $this->config->get('component_appid'),
                 'component_appsecret'     => $this->config->get('component_appsecret'),
                 'component_verify_ticket' => Tools::get('component_verify_ticket'),
@@ -108,7 +112,7 @@ class Service extends BasicWeChat
     {
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token={$component_access_token}";
-        $result = $this->callPostApi($url, [
+        $result = $this->httpPostForJson($url, [
             'authorizer_appid' => $authorizer_appid,
             'component_appid'  => $this->config->get('component_appid'),
         ]);
@@ -128,7 +132,7 @@ class Service extends BasicWeChat
     {
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/ api_set_authorizer_option?component_access_token={$component_access_token}";
-        $result = $this->callPostApi($url, [
+        $result = $this->httpPostForJson($url, [
             'option_name'      => $option_name,
             'option_value'     => $option_value,
             'authorizer_appid' => $authorizer_appid,
@@ -147,7 +151,7 @@ class Service extends BasicWeChat
     {
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token={$component_access_token}";
-        $result = $this->callPostApi($url, ['component_appid' => $this->config->get('component_appid')]);
+        $result = $this->httpPostForJson($url, ['component_appid' => $this->config->get('component_appid')]);
         if (empty($result['pre_auth_code'])) {
             throw new InvalidResponseException('GetPreauthCode Faild.', '0');
         }
@@ -183,7 +187,7 @@ class Service extends BasicWeChat
         }
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token={$component_access_token}";
-        $result = $this->callPostApi($url, [
+        $result = $this->httpPostForJson($url, [
             'component_appid'    => $this->config->get('component_appid'),
             'authorization_code' => $_GET['auth_code'],
         ]);
@@ -207,7 +211,7 @@ class Service extends BasicWeChat
     {
         $component_access_token = $this->getComponentAccessToken();
         $url = "https:// api.weixin.qq.com /cgi-bin/component/api_authorizer_token?component_access_token={$component_access_token}";
-        $result = $this->callPostApi($url, [
+        $result = $this->httpPostForJson($url, [
             'authorizer_appid'         => $authorizer_appid,
             'authorizer_refresh_token' => $authorizer_refresh_token,
             'component_appid'          => $this->config->get('component_appid'),
@@ -231,8 +235,7 @@ class Service extends BasicWeChat
     {
         $redirect_url = urlencode($redirect_uri);
         $component_appid = $this->config->get('component_appid');
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$authorizer_appid}&redirect_uri={$redirect_url}"
-            . "&response_type=code&scope={$scope}&state={$authorizer_appid}&component_appid={$component_appid}#wechat_redirect";
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$authorizer_appid}&redirect_uri={$redirect_url}&response_type=code&scope={$scope}&state={$authorizer_appid}&component_appid={$component_appid}#wechat_redirect";
     }
 
     /**
@@ -249,9 +252,8 @@ class Service extends BasicWeChat
         }
         $component_appid = $this->config->get('component_appid');
         $component_access_token = $this->getComponentAccessToken();
-        $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid={$authorizer_appid}&code={$_GET['code']}&grant_type=authorization_code&"
-            . "component_appid={$component_appid}&component_access_token={$component_access_token}";
-        $result = $this->callGetApi($url);
+        $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid={$authorizer_appid}&code={$_GET['code']}&grant_type=authorization_code&component_appid={$component_appid}&component_access_token={$component_access_token}";
+        $result = $this->httpGetForJson($url);
         return $result !== false ? $result : false;
     }
 
@@ -259,7 +261,7 @@ class Service extends BasicWeChat
      * 创建需要的接口实例
      * @param string $type 需要加载的接口实例名称
      * @param string $authorizer_appid 授权公众号的appid
-     * @return Card|Custom|Media|Menu|Oauth|Pay|Product|Qrcode|Receive|Scan|Script|Shake|Tags|Template|User|Wifi
+     * @return \WeChat\Card|\WeChat\Custom|\WeChat\Media|\WeChat\Menu|\WeChat\Oauth|\WeChat\Pay|\WeChat\Product|\WeChat\Qrcode|\WeChat\Receive|\WeChat\Scan|\WeChat\Script|\WeChat\Shake|\WeChat\Tags|\WeChat\Template|\WeChat\User|\WeChat\Wifi
      */
     public function instance($type, $authorizer_appid)
     {
@@ -270,6 +272,30 @@ class Service extends BasicWeChat
         $config['appsecret'] = $this->config->get('component_appsecret');
         $config['encodingaeskey'] = $this->config->get('component_encodingaeskey');
         return new $className($config);
+    }
+
+    /**
+     * 以POST获取接口数据并转为数组
+     * @param string $url 接口地址
+     * @param array $data 请求数据
+     * @param bool $buildToJson
+     * @return array
+     * @throws InvalidResponseException
+     */
+    protected function httpPostForJson($url, array $data, $buildToJson = true)
+    {
+        return Tools::json2arr(Tools::post($url, $buildToJson ? Tools::arr2json($data) : $data));
+    }
+
+    /**
+     * 以GET获取接口数据并转为数组
+     * @param string $url 接口地址
+     * @return array
+     * @throws InvalidResponseException
+     */
+    protected function httpGetForJson($url)
+    {
+        return Tools::json2arr(Tools::get($url));
     }
 
 }

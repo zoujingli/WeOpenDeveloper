@@ -1,12 +1,12 @@
 {
   "type": "library",
   "name": "zoujingli/weopen-developer",
+  "authors": "Anyon <zoujingli@qq.com",
   "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
   "description": "WeChat Open development of SDK",
-  "authors": "Anyon <zoujingli@qq.com",
   "license": "MIT",
   "keywords": [
-    "wechat-open"
+    "wechat"
   ],
   "require": {
     "php": ">=5.4",

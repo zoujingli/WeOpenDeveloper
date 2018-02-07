@@ -51,6 +51,9 @@ class Service
         if (empty($options['component_encodingaeskey'])) {
             throw new InvalidArgumentException("Missing Config -- [component_encodingaeskey]");
         }
+        if (!empty($options['cache_path'])) {
+            Tools::$cache_path = $options['cache_path'];
+        }
         $this->config = new DataArray($options);
     }
 
@@ -60,13 +63,14 @@ class Service
      * @throws InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    public function setComonentTicket()
+    public function getComonentTicket()
     {
         $receive = new Receive([
             'token'          => $this->config->get('component_token'),
             'appid'          => $this->config->get('component_appid'),
             'appsecret'      => $this->config->get('component_appsecret'),
             'encodingaeskey' => $this->config->get('component_encodingaeskey'),
+            'cache_path'     => $this->config->get('cache_path'),
         ]);
         $data = $receive->getReceive();
         if (!empty($data['ComponentVerifyTicket'])) {

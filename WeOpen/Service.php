@@ -88,21 +88,21 @@ class Service
     public function getComponentAccessToken()
     {
         $cache = 'wechat_component_access_token';
-        if (!($component_access_token = Tools::getCache($cache))) {
-            $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
-            $data = [
-                'component_appid'         => $this->config->get('component_appid'),
-                'component_appsecret'     => $this->config->get('component_appsecret'),
-                'component_verify_ticket' => Tools::getCache('component_verify_ticket'),
-            ];
-            $result = $this->httpPostForJson($url, $data);
-            if (empty($result['component_access_token'])) {
-                throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
-            }
-            Tools::setCache($cache, $result['component_access_token'], 7000);
-            return $result['component_access_token'];
+        if (($component_access_token = Tools::getCache($cache))) {
+            return $component_access_token;
         }
-        return $component_access_token;
+        $data = [
+            'component_appid'         => $this->config->get('component_appid'),
+            'component_appsecret'     => $this->config->get('component_appsecret'),
+            'component_verify_ticket' => Tools::getCache('component_verify_ticket'),
+        ];
+        $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
+        $result = $this->httpPostForJson($url, $data);
+        if (empty($result['component_access_token'])) {
+            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
+        }
+        Tools::setCache($cache, $result['component_access_token'], 7000);
+        return $result['component_access_token'];
     }
 
     /**

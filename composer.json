@@ -12,7 +12,9 @@
     }
   ],
   "keywords": [
-    "wechat"
+    "WeChat",
+    "WeChatOpen",
+    "WeChatOpenDevelopment"
   ],
   "require": {
     "php": ">=5.4",

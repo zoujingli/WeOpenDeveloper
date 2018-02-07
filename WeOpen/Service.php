@@ -88,8 +88,7 @@ class Service
     public function getComponentAccessToken()
     {
         $cache = 'wechat_component_access_token';
-        $component_access_token = Tools::getCache($cache);
-        if (empty($component_access_token)) {
+        if (!($component_access_token = Tools::getCache($cache))) {
             $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
             $data = [
                 'component_appid'         => $this->config->get('component_appid'),
@@ -100,8 +99,8 @@ class Service
             if (empty($result['component_access_token'])) {
                 throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
             }
-            $component_access_token = $result['component_access_token'];
-            Tools::setCache($cache, $component_access_token, 7000);
+            Tools::setCache($cache, $result['component_access_token'], 7000);
+            return $result['component_access_token'];
         }
         return $component_access_token;
     }

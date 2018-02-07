@@ -116,11 +116,15 @@ class Service
     {
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token={$component_access_token}";
-        $result = $this->httpPostForJson($url, [
+        $data = [
             'authorizer_appid' => $authorizer_appid,
             'component_appid'  => $this->config->get('component_appid'),
-        ]);
-        return $result;
+        ];
+        $result = $this->httpPostForJson($url, $data);
+        if (empty($result['authorizer_info'])) {
+            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
+        }
+        return $result['authorizer_info'];
     }
 
     /**
@@ -196,12 +200,14 @@ class Service
             'authorization_code' => $_GET['auth_code'],
         ];
         $result = $this->httpPostForJson($url, $data);
-        if (empty($result['authorizer_appid']) || empty($result['authorizer_access_token'])) {
+        if (empty($result['authorization_info'])) {
             throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
         }
+        $authorizer_appid = $result['authorization_info']['authorizer_appid'];
+        $authorizer_access_token = $result['authorization_info']['authorizer_access_token'];
         // 缓存授权公众号访问 ACCESS_TOKEN
-        Tools::setCache("{$result['authorizer_appid']}_access_token", $result['authorizer_access_token'], 7000);
-        return $result;
+        Tools::setCache("{$authorizer_appid}_access_token", $authorizer_access_token, 7000);
+        return $result['authorization_info'];
     }
 
     /**

@@ -1,10 +1,16 @@
 {
   "type": "library",
   "name": "zoujingli/weopen-developer",
-  "authors": "Anyon <zoujingli@qq.com",
   "homepage": "https://github.com/zoujingli/WeOpenDeveloper",
   "description": "WeChat Open development of SDK",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Anyon",
+      "email": "zoujingli@qq.com",
+      "homepage": "http://ctolog.com"
+    }
+  ],
   "keywords": [
     "wechat"
   ],

@@ -27,7 +27,7 @@ Repositorie
 
 Install
 --
-1.0 通过 Composer 来管理安装
+* 通过 Composer 来管理安装
 ```shell
 # 首次安装 线上版本（稳定）
 composer require zoujingli/weopen-developer
@@ -39,7 +39,7 @@ composer require zoujingli/weopen-developer dev-master
 composer update zoujingli/weopen-developer
 ```
 
-2.0 接口实例所需参数
+* 接口实例所需参数
 ```php
 
 // 配置参数（可以公众号服务平台获取）
@@ -67,7 +67,7 @@ $config['GetAccessTokenCallback'] = function ($authorizer_appid) use ($config) {
 };
 ```
 
-3.0 Ticket接收处理
+* Ticket 接收处理
 ```php
 
 try{
@@ -88,7 +88,7 @@ try{
 }
 ```
 
-4.0 实例指定接口
+* 实例指定接口
 ```php
 try{
 

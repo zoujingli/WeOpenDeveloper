@@ -69,7 +69,7 @@ $config['GetAccessTokenCallback'] = function ($authorizer_appid) use ($config) {
 
 3.0 Ticket接收处理
 ```php
-```php
+```php 
 try{
 
     // 实例公众号服务接口

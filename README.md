@@ -25,7 +25,7 @@ Repositorie
 >* OSChina 托管地址：http://git.oschina.net/zoujingli/WeOpenDeveloper
 
 更多开发可以参考项目 [ThinkService](https://github.com/zoujingli/ThinkService) 。
-此项目已经实现对接，ThinkAdmin + ThinkService 组合。
+此项目已经实现对接，[ThinkAdmin](https://github.com/zoujingli/ThinkAdmin) + [ThinkService](https://github.com/zoujingli/ThinkService) 组合。
 
 Install
 --

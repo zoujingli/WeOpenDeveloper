@@ -274,6 +274,27 @@ class Service
     }
 
     /**
+     * 取当前所有已授权的帐号基本信息
+     * @param integer $count 拉取数量，最大为500
+     * @param integer $offset 偏移位置/起始位置
+     * @return array|bool
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getAuthorizerList($count = 500, $offset = 0)
+    {
+        $component_appid = $this->config->get('component_appid');
+        $component_access_token = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_list?component_access_token={$component_access_token}";
+        $result = $this->httpPostForJson($url, [
+            'count'           => $count,
+            'offset'          => $offset,
+            'component_appid' => $component_appid,
+        ]);
+        return $result !== false ? $result : false;
+    }
+
+    /**
      * 创建指定授权公众号接口实例
      * @param string $name 需要加载的接口实例名称
      * @param string $authorizer_appid 授权公众号的appid

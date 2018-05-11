@@ -269,8 +269,7 @@ class Service
         $component_appid = $this->config->get('component_appid');
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid={$authorizer_appid}&code={$_GET['code']}&grant_type=authorization_code&component_appid={$component_appid}&component_access_token={$component_access_token}";
-        $result = $this->httpGetForJson($url);
-        return $result !== false ? $result : false;
+        return $this->httpGetForJson($url);
     }
 
     /**
@@ -286,12 +285,11 @@ class Service
         $component_appid = $this->config->get('component_appid');
         $component_access_token = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_list?component_access_token={$component_access_token}";
-        $result = $this->httpPostForJson($url, [
+        return $this->httpPostForJson($url, [
             'count'           => $count,
             'offset'          => $offset,
             'component_appid' => $component_appid,
         ]);
-        return $result !== false ? $result : false;
     }
 
     /**

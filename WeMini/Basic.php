@@ -12,8 +12,7 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-namespace WeOpen\MiniApp;
-
+namespace WeMini;
 
 use WeChat\Contracts\BasicWeChat;
 

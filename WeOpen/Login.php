@@ -83,4 +83,28 @@ class Login
         return json_decode(Tools::get($url));
     }
 
+    /**
+     * 检验授权凭证（access_token）是否有效
+     * @param string $accessToken 调用凭证
+     * @param string $openid 普通用户的标识，对当前开发者帐号唯一
+     * @return array
+     */
+    public function checkAccessToken($accessToken, $openid)
+    {
+        $url = "https://api.weixin.qq.com/sns/auth?access_token={$accessToken}&openid={$openid}";
+        return json_decode(Tools::get($url));
+    }
+
+    /**
+     * 获取用户个人信息（UnionID机制）
+     * @param string $accessToken 调用凭证
+     * @param string $openid 普通用户的标识，对当前开发者帐号唯一
+     * @return array
+     */
+    public function getUserinfo($accessToken, $openid)
+    {
+        $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$accessToken}&openid={$openid}";
+        return json_decode(Tools::get($url));
+    }
+
 }

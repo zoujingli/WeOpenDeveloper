@@ -118,9 +118,8 @@ class MiniApp extends Service
     public function deleteTemplate($template_id)
     {
         $component_access_token = $this->getComponentAccessToken();
-        $url = "https://api.weixin.qq.com/wxa/deletetemplate?access_token=$component_access_token";
+        $url = "https://api.weixin.qq.com/wxa/deletetemplate?access_token={$component_access_token}";
         return $this->httpPostForJson($url, ['template_id' => $template_id]);
     }
-
-
+    
 }

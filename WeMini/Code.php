@@ -376,7 +376,7 @@ class Code extends BasicWeChat
      */
     public function addToTemplate($draft_id)
     {
-        $url = 'https://api.weixin.qq.com/wxa/grayrelease?access_token=ACCESS_TOKEN';
+        $url = 'https://api.weixin.qq.com/wxa/addtotemplate?access_token=ACCESS_TOKEN';
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->httpPostForJson($url, ['draft_id' => $draft_id]);
     }

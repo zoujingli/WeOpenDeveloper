@@ -140,13 +140,12 @@ class Service
     {
         $componentAccessToken = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option?component_access_token={$componentAccessToken}";
-        $result = $this->httpPostForJson($url, [
+        return $this->httpPostForJson($url, [
             'option_name'      => $optionName,
             'option_value'     => $optionValue,
             'authorizer_appid' => $authorizerAppid,
             'component_appid'  => $this->config->get('component_appid'),
         ]);
-        return $result;
     }
 
     /**
@@ -161,12 +160,11 @@ class Service
     {
         $componentAccessToken = $this->getComponentAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option?component_access_token={$componentAccessToken}";
-        $result = $this->httpPostForJson($url, [
+        return $this->httpPostForJson($url, [
             'option_name'      => $optionName,
             'authorizer_appid' => $authorizerAppid,
             'component_appid'  => $this->config->get('component_appid'),
         ]);
-        return $result;
     }
 
     /**

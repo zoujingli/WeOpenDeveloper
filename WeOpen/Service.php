@@ -150,6 +150,26 @@ class Service
     }
 
     /**
+     * 获取授权方的选项设置信息
+     * @param string $authorizerAppid 授权公众号或小程序的appid
+     * @param string $optionName 选项名称
+     * @return array
+     * @throws InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function getAuthorizerOption($authorizerAppid, $optionName)
+    {
+        $componentAccessToken = $this->getComponentAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option?component_access_token={$componentAccessToken}";
+        $result = $this->httpPostForJson($url, [
+            'option_name'      => $optionName,
+            'authorizer_appid' => $authorizerAppid,
+            'component_appid'  => $this->config->get('component_appid'),
+        ]);
+        return $result;
+    }
+
+    /**
      * 获取预授权码 pre_auth_code
      * @return string
      * @throws InvalidResponseException

@@ -1,4 +1,7 @@
-[![Latest Stable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/stable)](https://packagist.org/packages/weopen-developer) [![Latest Unstable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/unstable)](https://packagist.org/packages/zoujingli/weopen-developer) [![Total Downloads](https://poser.pugx.org/zoujingli/weopen-developer/downloads)](https://packagist.org/packages/weopen-developer) [![License](https://poser.pugx.org/zoujingli/weopen-developer/license)](https://packagist.org/packages/weopen-developer)
+[![Latest Stable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/stable)](https://packagist.org/packages/zoujingli/weopen-developer) 
+[![Latest Unstable Version](https://poser.pugx.org/zoujingli/weopen-developer/v/unstable)](https://packagist.org/packages/zoujingli/weopen-developer) 
+[![Total Downloads](https://poser.pugx.org/zoujingli/weopen-developer/downloads)](https://packagist.org/packages/zoujingli/weopen-developer) 
+[![License](https://poser.pugx.org/zoujingli/weopen-developer/license)](https://packagist.org/packages/zoujingli/weopen-developer)
 
 # WeOpenDeveloper
 WeOpenDeveloper 为微信开放平台服务开发工具，基于 WeChatDeveloper 可对公众号进行管理。
@@ -17,13 +20,15 @@ PHP开发技术交流（QQ群 513350915）
 
 > 针对 WeChatDeveloper 也有一准备了帮助资料可供参考。
 >* WeChatDeveloper 文档：http://www.kancloud.cn/zoujingli/wechat-developer
->* WeOpenDeveloper 文档：http://www.kancloud.cn/zoujingli/weopen-developer
 
-Repositorie
+Repository
 --
  WeOpenDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
 >* GitHub 托管地址：https://github.com/zoujingli/WeOpenDeveloper
 >* OSChina 托管地址：http://git.oschina.net/zoujingli/WeOpenDeveloper
+
+更多开发可以参考项目 [ThinkService](https://github.com/zoujingli/ThinkService) 。
+此项目已经实现对接，[ThinkAdmin](https://github.com/zoujingli/ThinkAdmin) + [ThinkService](https://github.com/zoujingli/ThinkService) 组合。
 
 Install
 --
@@ -119,4 +124,4 @@ Copyright
 
 Sponsor
 --
-![赞助](http://zoujingli.oschina.io/static/pay.png)
+![赞助](http://static.thinkadmin.top/pay.png)

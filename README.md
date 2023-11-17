@@ -61,7 +61,7 @@ $config['GetAccessTokenCallback'] = function ($authorizer_appid) use ($config) {
     $authorizer_refresh_token = ''; // 通过$authorizer_appid从数据库去找吧，在授权绑定的时候获取
     $result = $open->refreshAccessToken($authorizer_appid, $authorizer_refresh_token);
     if (empty($result['authorizer_access_token'])) {
-        throw new \WeChat\Exceptions\InvalidResponseException($result['errmsg'], '0');
+        throw new \WeChat\Exceptions\InvalidResponseException($result['errmsg']??'system error', '0');
     }
     $data = [
         'authorizer_access_token'  => $result['authorizer_access_token'],

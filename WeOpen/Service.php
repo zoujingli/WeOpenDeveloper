@@ -99,7 +99,7 @@ class Service
         $url = 'https://api.weixin.qq.com/cgi-bin/component/api_component_token';
         $result = $this->httpPostForJson($url, $data);
         if (empty($result['component_access_token'])) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
+            throw new InvalidResponseException($result['errmsg']??'system error', $result['errcode']??-1, $data);
         }
         Tools::setCache($cache, $result['component_access_token'], 7000);
         return $result['component_access_token'];
@@ -122,7 +122,7 @@ class Service
         ];
         $result = $this->httpPostForJson($url, $data);
         if (empty($result['authorizer_info'])) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
+            throw new InvalidResponseException($result['errmsg']??'system error', $result['errcode']??-1, $data);
         }
         return $result['authorizer_info'];
     }
@@ -244,7 +244,7 @@ class Service
         ];
         $result = $this->httpPostForJson($url, $data);
         if (empty($result['authorization_info'])) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
+            throw new InvalidResponseException($result['errmsg']??'system error', $result['errcode']??-1, $data);
         }
         $authorizerAppid = $result['authorization_info']['authorizer_appid'];
         $authorizerAccessToken = $result['authorization_info']['authorizer_access_token'];
@@ -272,7 +272,7 @@ class Service
         ];
         $result = $this->httpPostForJson($url, $data);
         if (empty($result['authorizer_access_token'])) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $data);
+            throw new InvalidResponseException($result['errmsg']??'system error', $result['errcode']??-1, $data);
         }
         // 缓存授权公众号访问 ACCESS_TOKEN
         Tools::setCache("{$authorizerAppid}_access_token", $result['authorizer_access_token'], 7000);

@@ -33,7 +33,7 @@ try {
         $authorizer_refresh_token = 'L5uFIa0U6KLalPyXckyqoVIJYLhsfrg8k9YzybZIHsx'; // 从数据库去找吧，在授权绑定的时候获取到了
         $result = $open->refreshAccessToken($authorizer_appid, $authorizer_refresh_token);
         if (empty($result['authorizer_access_token'])) {
-            throw new \WeChat\Exceptions\InvalidResponseException($result['errmsg'], '0');
+            throw new \WeChat\Exceptions\InvalidResponseException($result['errmsg']??'system error', '0');
         }
         $data = [
             'authorizer_access_token'  => $result['authorizer_access_token'],
